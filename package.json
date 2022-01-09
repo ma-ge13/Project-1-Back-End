@@ -1,0 +1,32 @@
+{
+  "name": "project-1-back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest",
+    "start": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ma-ge13/Project-1-Back-End.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ma-ge13/Project-1-Back-End/issues"
+  },
+  "homepage": "https://github.com/ma-ge13/Project-1-Back-End#readme",
+  "dependencies": {
+    "@azure/cosmos": "^3.15.0",
+    "@types/express": "^4.17.13",
+    "@types/uuid": "^8.3.3",
+    "express": "^4.17.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.2"
+  }
+}
