@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "jest",
+    "test-reimbursements": "jest azure-reimbursement-dao.spec.ts",
+    "test-employee": "jest azure-employee-dao.spec.ts",
     "start": "ts-node index.ts"
   },
   "repository": {
@@ -19,9 +20,13 @@
   "homepage": "https://github.com/ma-ge13/Project-1-Back-End#readme",
   "dependencies": {
     "@azure/cosmos": "^3.15.0",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/lodash": "^4.14.178",
     "@types/uuid": "^8.3.3",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
+    "lodash": "^4.17.21",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
