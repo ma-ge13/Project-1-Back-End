@@ -6,14 +6,15 @@ import _ from "lodash";
 const connectToDAO: ReimbursementDAO = new AzureReimbursement;
 
 export default interface ReimbursementService {
-    
-    generateReimbursementRequest(received: Reimbursement): Promise<Reimbursement>;
+  generateReimbursementRequest(received: Reimbursement): Promise<Reimbursement>;
 
-    retrieveAllReimbursementsRequest(): Promise<Reimbursement[]>;
+  retrieveAllReimbursementsRequest(): Promise<Reimbursement[]>;
 
-    retrievePendingReimbursementsRequest(): Promise<Reimbursement[]>;
+  retrievePendingReimbursementsRequest(): Promise<Reimbursement[]>;
 
-    updateReimbursementRequest(received: Reimbursement);
+  retrieveReimbursementByIdRequest(reimbursementId: string): Promise<Reimbursement>;
+
+  updateReimbursementRequest(received: Reimbursement);
 }
 
 export class ReimbursementServiceImpl implements ReimbursementService {
@@ -38,6 +39,11 @@ export class ReimbursementServiceImpl implements ReimbursementService {
         return await connectToDAO.getPendingReimbursements();
     }
 
+    async retrieveReimbursementByIdRequest(reimbursementId: string): Promise<Reimbursement> {
+
+        return await connectToDAO.getReimbursementById(reimbursementId);
+    }
+
     async updateReimbursementRequest(received: Reimbursement) {
         this.validateReimbursement(received);
         
@@ -51,21 +57,19 @@ export class ReimbursementServiceImpl implements ReimbursementService {
             throw error;
         }
         
-        const today = new Date();
-        
         if(!received.id) {
             received.id = v4();
-            received.submittalTime = today.getTime();
+            received.submittalTime = new Date().getTime();
             received.status = "Pending";
         }
         else
-            received.resolutionTime = today.getTime();
+            received.resolutionTime = new Date().getTime();
 
         return received;
     }
 
     private verifyReimbursement (received: Reimbursement): Reimbursement {
-        const requiredProperties = ["receipts", "amount", "description"];
+        const requiredProperties = ["description", "receipts", "amount"];
         for (const property of requiredProperties) {
             if ((property === "receipts" && _.isEmpty(received.receipts)) || !received[property]) {
                 throw new Error(`${property}`);

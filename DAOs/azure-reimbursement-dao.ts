@@ -6,16 +6,16 @@ const client = new CosmosClient(process.env.COSMOS_CONNECTION!);
 const db = client.database("PayMyMoneyService DB");
 const container = db.container("Reimbursements");
 
-export default interface ReimbursementDAO {    
-    createReimbursement(request: Reimbursement): Promise<Reimbursement>;
+export default interface ReimbursementDAO {
+  createReimbursement(request: Reimbursement): Promise<Reimbursement>;
 
-    getReimbursementById(reimbursementId: string): Promise<Reimbursement>;
+  getAllReimbursements(): Promise<Reimbursement[]>;
 
-    getAllReimbursements(): Promise<Reimbursement[]>;
+  getPendingReimbursements(): Promise<Reimbursement[]>;
 
-    getPendingReimbursements(): Promise<Reimbursement[]>;
+  getReimbursementById(reimbursementId: string): Promise<Reimbursement>;
 
-    updateReimbursement(reimbursement: Reimbursement);
+  updateReimbursement(reimbursement: Reimbursement);
 }
 
 export class AzureReimbursement implements ReimbursementDAO {
@@ -23,12 +23,6 @@ export class AzureReimbursement implements ReimbursementDAO {
         const response = await container.items.create(request);
 
         return this.getReimbursementById(response.resource!.id);
-    }
-
-    async getReimbursementById(reimbursementId: string): Promise<Reimbursement> {
-        const response = await container.item(reimbursementId, reimbursementId).read<Reimbursement>();
-
-        return (this.scrubAzureData(response.resource))[0];
     }
 
     async getAllReimbursements(): Promise<Reimbursement[]> {
@@ -41,6 +35,13 @@ export class AzureReimbursement implements ReimbursementDAO {
         const reimbursements = this.getAllReimbursements();
 
         return (await reimbursements).filter(r => r.status === "Pending");
+    }
+
+    async getReimbursementById(reimbursementId: string): Promise<Reimbursement> {
+        const query = container.items.query(`SELECT * FROM Reimbursements r WHERE r.id = "${reimbursementId}"`);
+        const response = (await query.fetchAll()).resources[0];
+
+        return (this.scrubAzureData(response))[0];
     }
 
     async updateReimbursement(reimbursement: Reimbursement) {

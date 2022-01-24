@@ -3,14 +3,18 @@ import ReimbursementService, { ReimbursementServiceImpl } from "./services/reimb
 import cors from "cors";
 import _ from "lodash";
 import Employee from "./entities/employee";
-import EmployeeService, { EmployeeServiceImpl } from "./services/employee-service";
+import LoginService, { LoginServiceImpl } from "./services/login-service";
+import Reimbursement from "./entities/reimbursement";
 
 const app = express();
-const employeeService: EmployeeService = new EmployeeServiceImpl;
+const employeeService: LoginService = new LoginServiceImpl;
 const reimburseService: ReimbursementService = new ReimbursementServiceImpl;
 
 app.use(express.json());
 app.use(cors());
+
+
+// ROUTE TO READ EMPLOYEE:
 
 app.get("/employee", async (req, res) => {
         
@@ -25,27 +29,45 @@ app.get("/employee", async (req, res) => {
     }
 });
 
+
+// ROUTE TO CREATE REIMBURSEMENT:
+
 app.post("/reimbursements", async (req, res) => {
     
     try {
-        const newReimbursement = await reimburseService.generateReimbursementRequest(req.body);
+        const newReimbursement: Reimbursement = await reimburseService.generateReimbursementRequest(req.body);
         res.status(201).send(newReimbursement!);
     } catch (error) {
         res.status(400).send(error.message);
     };
 });
 
+
+// ROUTES TO READ:
+
+// All Reimbursements
 app.get("/reimbursements", async (req, res) => {
-    const reimbursements = await reimburseService.retrieveAllReimbursementsRequest();
+    const reimbursements: Reimbursement[] = await reimburseService.retrieveAllReimbursementsRequest();
 
     res.status(200).send(reimbursements);
 });
 
+// All Pending Reimbursements
 app.get("/reimbursements/pending", async (req, res) => {
-    const reimbursements = await reimburseService.retrievePendingReimbursementsRequest();
+    const reimbursements: Reimbursement[] = await reimburseService.retrievePendingReimbursementsRequest();
 
     res.status(200).send(reimbursements);
 });
+
+// A Single Reimbursement
+app.get("/reimbursements/:id", async (req, res) => {
+    const reimbursement: Reimbursement = await reimburseService.retrieveReimbursementByIdRequest(req.params.id);
+
+    res.status(200).send(reimbursement);
+});
+
+
+// ROUTE TO UPDATE A REIMBURSEMENT
 
 app.put("/reimbursements/update", async (req, res) => {
     await reimburseService.updateReimbursementRequest(req.body);
@@ -53,4 +75,6 @@ app.put("/reimbursements/update", async (req, res) => {
     res.status(200).send();
 });
 
-app.listen(4444, () => { console.log("Webserver is running . . .") });
+app.listen(4444, () => {
+    console.log("Webserver is running . . .")
+});
