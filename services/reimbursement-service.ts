@@ -23,7 +23,7 @@ export class ReimbursementServiceImpl implements ReimbursementService {
         try {
             this.validateReimbursement(received);
         } catch (error) {
-            throw new Error(`The ${error.message} section of your request is missing.`);
+            throw new Error(`The ${error.message} section of your request is empty or contains invalid data.`);
         }
 
         return await connectToDAO.createReimbursement(received);
@@ -71,7 +71,7 @@ export class ReimbursementServiceImpl implements ReimbursementService {
     private verifyReimbursement (received: Reimbursement): Reimbursement {
         const requiredProperties = ["description", "receipts", "amount"];
         for (const property of requiredProperties) {
-            if ((property === "receipts" && _.isEmpty(received.receipts)) || !received[property]) {
+            if ((!received[property] || property === "receipts" && _.isEmpty(received.receipts)) || property === "amount" && received.amount < 0) {
                 throw new Error(`${property}`);
             }
         }
