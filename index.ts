@@ -1,7 +1,6 @@
 import express from "express";
 import ReimbursementService, { ReimbursementServiceImpl } from "./services/reimbursement-service";
 import cors from "cors";
-import _ from "lodash";
 import Employee from "./entities/employee";
 import LoginService, { LoginServiceImpl } from "./services/login-service";
 import Reimbursement from "./entities/reimbursement";
@@ -37,10 +36,10 @@ app.post("/reimbursements", async (req, res) => {
     
     try {
         const newReimbursement: Reimbursement = await reimburseService.generateReimbursementRequest(req.body);
-        res.status(201).send(newReimbursement!);
+        res.status(201).send(newReimbursement);
     } catch (error) {
         res.status(400).send(error.message);
-    };
+    }
 });
 
 

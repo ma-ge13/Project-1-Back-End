@@ -31,7 +31,7 @@ describe("Reimbursement Azure DAO Test", () => {
         const statusList: string[] = [];
         for (const reimbursement of reimbursements) {
             statusList.push(reimbursement.status!)
-        };
+        }
         console.log(statusList);
 
         expect(statusList).not.toContain("Approved" || "Denied");

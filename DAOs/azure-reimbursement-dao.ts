@@ -47,7 +47,7 @@ export class AzureReimbursement implements ReimbursementDAO {
     async updateReimbursement(reimbursement: Reimbursement) {
         await container.item(reimbursement.id!, reimbursement.id).replace<Reimbursement>(reimbursement);
 
-        return;
+        return
     }
 
     private scrubAzureData(reimbursementRecords): Reimbursement[] {

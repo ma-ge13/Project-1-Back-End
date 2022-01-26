@@ -19,29 +19,29 @@ export default interface ReimbursementService {
 
 export class ReimbursementServiceImpl implements ReimbursementService {
     
-    async generateReimbursementRequest(received: Reimbursement): Promise<Reimbursement> {
+    generateReimbursementRequest(received: Reimbursement): Promise<Reimbursement> {
         try {
             this.validateReimbursement(received);
         } catch (error) {
             throw new Error(`The ${error.message} section of your request is empty or contains invalid data.`);
         }
 
-        return await connectToDAO.createReimbursement(received);
+        return connectToDAO.createReimbursement(received);
     }
 
-    async retrieveAllReimbursementsRequest(): Promise<Reimbursement[]> {
+    retrieveAllReimbursementsRequest(): Promise<Reimbursement[]> {
         
-        return await connectToDAO.getAllReimbursements();
+        return connectToDAO.getAllReimbursements();
     }
 
-    async retrievePendingReimbursementsRequest(): Promise<Reimbursement[]> {
+    retrievePendingReimbursementsRequest(): Promise<Reimbursement[]> {
         
-        return await connectToDAO.getPendingReimbursements();
+        return connectToDAO.getPendingReimbursements();
     }
 
-    async retrieveReimbursementByIdRequest(reimbursementId: string): Promise<Reimbursement> {
+    retrieveReimbursementByIdRequest(reimbursementId: string): Promise<Reimbursement> {
 
-        return await connectToDAO.getReimbursementById(reimbursementId);
+        return connectToDAO.getReimbursementById(reimbursementId);
     }
 
     async updateReimbursementRequest(received: Reimbursement) {
