@@ -12,6 +12,7 @@ const reimburseService: ReimbursementService = new ReimbursementServiceImpl;
 
 app.use(express.json());
 app.use(cors());
+app.disable("x-powered-by");
 
 
 // ROUTE TO READ EMPLOYEE:
