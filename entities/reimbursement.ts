@@ -8,5 +8,6 @@ export default interface Reimbursement {
   id?: string;
   submittalTime?: number;
   status?: string;
+  comment?: string;
   resolutionTime?: number;
 }
