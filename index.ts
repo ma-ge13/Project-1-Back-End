@@ -10,18 +10,20 @@ const employeeService: LoginService = new LoginServiceImpl;
 const reimburseService: ReimbursementService = new ReimbursementServiceImpl;
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: "*"
+};
+app.use(cors(corsOptions));
 app.disable("x-powered-by");
 
 
 // ROUTE TO READ EMPLOYEE:
 
-app.get("/employee", async (req, res) => {
-        
+app.post("/employee", async (req, res) => {
     try {
         const employee: Employee = await employeeService.getEmployeeRequest(
-          String(req.query.username),
-          String(req.query.password)
+          String(req.body.username),
+          String(req.body.password)
         );
         res.status(200).send(employee);
     } catch (error) {
@@ -33,7 +35,6 @@ app.get("/employee", async (req, res) => {
 // ROUTE TO CREATE REIMBURSEMENT:
 
 app.post("/reimbursements", async (req, res) => {
-    
     try {
         const newReimbursement: Reimbursement = await reimburseService.generateReimbursementRequest(req.body);
         res.status(201).send(newReimbursement);
@@ -75,6 +76,10 @@ app.put("/reimbursements/update", async (req, res) => {
     res.status(200).send();
 });
 
-app.listen(4444, () => {
+app.listen(process.env.PORT || 4444, () => {
     console.log("Webserver is running . . .")
 });
+
+// app.listen(4444, () => {
+//     console.log("Webserver is running . . .")
+// });

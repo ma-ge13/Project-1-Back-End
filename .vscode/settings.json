@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6e1ed882-69c8-4503-a33c-06ffac95a753/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/ponzi-bank",
+    "appService.deploySubpath": "."
+}
