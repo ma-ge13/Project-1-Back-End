@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test-reimbursements": "jest azure-reimbursement-dao.spec.ts",
-    "test-employee": "jest azure-employee-dao.spec.ts",
+    "test": "jest",
     "start": "ts-node index.ts"
   },
   "repository": {
